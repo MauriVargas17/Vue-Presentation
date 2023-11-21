@@ -2,25 +2,39 @@
   <div id="app">
     <div id="map-container">
       <img id="map" src="@/assets/map.png" alt="Map Background" />
-      <img id="mario" @click="selectLevel" :src="marioImage" :style="{
-        top: marioPosition.top + 'px',
-        left: marioPosition.left + 'px',
-      }" />
+      <img
+        id="mario"
+        @click="selectLevel"
+        :src="marioImage"
+        :style="{
+          top: marioPosition.top + 'px',
+          left: marioPosition.left + 'px',
+        }"
+      />
       <audio id="backgroundMusic" loop autoplay>
         <source src="@/assets/musicMarioBros.mp3" type="audio/mp3" />
       </audio>
       <div>
         <div v-if="selectedLevel">
           <button @click="backToSelection">Back to Level Selection</button>
-          <component :is="selectedLevelComponent" :background="selectedLevel.background" />
+          <component
+            :is="selectedLevelComponent"
+            :background="selectedLevel.background"
+          />
         </div>
         <div v-else>
           <h1>Level Selection</h1>
           <div>
-            <div @click="selectLevel(1)" :class="{ selected: selectedLevel === 1 }">
+            <div
+              @click="selectLevel(1)"
+              :class="{ selected: selectedLevel === 1 }"
+            >
               <img src="@/assets/lvl1.png" alt="Level 1" />
             </div>
-            <div @click="selectLevel(2)" :class="{ selected: selectedLevel === 2 }">
+            <div
+              @click="selectLevel(2)"
+              :class="{ selected: selectedLevel === 2 }"
+            >
               <img src="@/assets/lvl2.png" alt="Level 2" />
             </div>
           </div>
@@ -39,10 +53,30 @@
       <p>{{ selectedLevel.description }}</p>
       <button @click="backToSelection">Back to Level Selection</button>
     </div>
-    <div v-if="selectedLevel" id="level-info" :style="{ backgroundImage: 'url(' + selectedLevel.background + ')' }">
+    <div
+      v-if="selectedLevel"
+      id="level-info"
+      :style="{ backgroundImage: 'url(' + selectedLevel.background + ')' }"
+    >
       <h1>{{ selectedLevel.title }}</h1>
-      <a v-if="selectedLevel.link" :href="selectedLevel.link" target="_blank">
-        <img :src="require('@/assets/paperPxlArt.png')" alt="Paper Pxl Art" style="max-width: 50px;">
+      <!-- <a v-if="selectedLevel.link" :href="selectedLevel.link" target="_blank">
+        <img
+          :src="require('@/assets/paperPxlArt.png')"
+          alt="Paper Pxl Art"
+          style="max-width: 50px"
+        />
+      </a> -->
+      <a
+        v-for="link in selectedLevel.links"
+        :key="link.title"
+        :href="link.link"
+        target="_blank"
+      >
+        <img
+          :src="require('@/assets/paperPxlArt.png')"
+          alt="Paper Pxl Art"
+          style="max-width: 50px"
+        />
       </a>
       <p>{{ selectedLevel.description }}</p>
       <table>
@@ -53,7 +87,11 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="activity in selectedLevel.activities" :key="activity.date" class="activity-row">
+          <tr
+            v-for="activity in selectedLevel.activities"
+            :key="activity.date"
+            class="activity-row"
+          >
             <td>{{ activity.date }}</td>
             <td>{{ activity.activity }}</td>
           </tr>
@@ -78,129 +116,227 @@ export default {
       level: [
         {
           title: "Level 1",
-          description: "Descripcion de TDR para Fendermed",
+          description: "Fase de inicio para Fendermed",
           background: require("@/assets/lvl1.png"),
+          links: [
+            {
+              title: "TDR",
+              link: "https://docs.google.com/document/d/1L9bep_QlKBWPA2dte0BrOXx8kld3o3wijRaB1E9zJEE/edit",
+            },
+            {
+              title: "Carta de Aceptacion",
+              link: "https://docs.google.com/document/d/1eb8dMCZi4SgLG6_XU4fs8UWRxY6gxRkPMtRDvwffZMo/edit",
+            },
+            {
+              title: "Fase de Inicio",
+              link: "https://docs.google.com/document/d/1UNgwC10LiXWrkK79f4J5aOiwt5whPpPwMUxLq32SihQ/edit",
+            },
+          ],
           link: "https://docs.google.com/document/d/1L9bep_QlKBWPA2dte0BrOXx8kld3o3wijRaB1E9zJEE/edit",
           activities: [
             {
-              date: "2022-01-01",
-              activity: "Reuniones Iniciales con Interesados",
+              date: "Semana 1",
+              activity:
+                "Fase de Inicio - Revisión y análisis detallado de requisitos.",
             },
             {
-              date: "2022-01-02",
-              activity: "Definición de Objetivos y Alcance",
+              date: "Semana 1",
+              activity:
+                "Fase de Inicio - Identificación de stakeholders y definición de roles.",
             },
             {
-              date: "2022-01-03",
-              activity: "Análisis de Requisitos",
+              date: "Semana 2",
+              activity:
+                "Fase de Inicio - Establecimiento de objetivos y criterios de éxito.",
             },
             {
-              date: "2022-01-04",
-              activity: "Investigación de Tecnologías",
+              date: "Semana 2",
+              activity: "Fase de Inicio - Elaboracion de TDR.",
             },
           ],
         },
         {
           title: "Level 2",
-          description: "Descripcion de las herramientas usadas",
+          description: "Planificacion del proyecto",
           background: require("@/assets/lvl2.png"),
-          link: "https://docs.google.com/document/d/1UNgwC10LiXWrkK79f4J5aOiwt5whPpPwMUxLq32SihQ/edit",
+          links: [
+            {
+              title: "Riesgos",
+              link: "https://docs.google.com/document/d/1ZO2a9_n8XXlMLvoWNvo87Vweu713lF1AhCClS_BShxc/edit",
+            },
+          ],
           activities: [
             {
-              date: "2022-01-01",
-              activity: "Definición del Proyecto",
+              date: "Semana 3",
+              activity:
+                "Fase de Planificación - Creacion de documentos de TDR, alcances y riesgos.",
             },
             {
-              date: "2022-01-02",
-              activity: "Identificación de Interesados",
+              date: "Semana 3",
+              activity:
+                "Fase de Planificación - Desarrollo de plan de gestion de riesgos.",
             },
+
             {
-              date: "2022-01-03",
-              activity: "Estudio de Viabilidad",
-            },
-            {
-              date: "2022-01-04",
-              activity: "Formación del Equipo del Proyecto",
+              date: "Semana 4",
+              activity:
+                "Fase de Planificación - Establecimiento de cronograma de actividades.",
             },
           ],
         },
         {
           title: "Level 3",
-          description: "Sky High Challenge (Herramientas que se usaran)",
+          description: "Diseño del proyecto",
           background: require("@/assets/level3.png"),
-          link: "https://docs.google.com/document/d/15Z26m_yu_WGgBsiHr089wSMsjZRSPVtDN2mwLHxlOs4/edit",
+          links: [
+            {
+              title: "Prototipos",
+              link: "https://drive.google.com/drive/mobile/folders/1h_74vvMLdrCobDO8rB69YPPuldSXNMSs/1mlMK0JqME_tFNRKlcsDzXmVaIE_WjFvb?usp=sharing&sort=13&direction=a",
+            },
+          ],
           activities: [
             {
-              date: "1",
-              activity: "YouTrack",
+              date: "Semana 4",
+              activity:
+                "Fase de Diseño - Seleccion de tecnologias y metodologias.",
             },
             {
-              date: "2",
-              activity: "Mockups.com",
+              date: "Semana 4",
+              activity:
+                "Fase de Diseño - Elaboracion de prototipos y bocetos de diseño.",
             },
             {
-              date: "3",
-              activity: "Draw.io",
+              date: "2024-03-20",
+              activity: "Fase de Diseño - Desarrollo de interfaces de usuario.",
+            },
+            {
+              date: "2024-03-25",
+              activity:
+                "Fase de Diseño - Desarrollo de un plan de pruebas de usabilidad.",
             },
           ],
         },
         {
           title: "Level 4",
-          description: "Haunted Mansion Mystery",
+          description: "Desarrollo del E-commerce",
           background: require("@/assets/level4.png"),
+          links: [
+            {
+              title: "Desarrollo",
+              link: "https://docs.google.com/document/d/15Z26m_yu_WGgBsiHr089wSMsjZRSPVtDN2mwLHxlOs4/edit",
+            },
+          ],
           activities: [
             {
-              date: "2022-01-01",
-              activity: "Actividad 1",
+              date: "2024-04-01",
+              activity: "Fase de Desarrollo - Programación del frontend.",
             },
             {
-              date: "2022-01-02",
-              activity: "Actividad 2",
+              date: "2024-04-10",
+              activity: "Fase de Desarrollo - Programación del backend.",
+            },
+            {
+              date: "2024-04-20",
+              activity: "Fase de Desarrollo - Creación de la base de datos.",
+            },
+            {
+              date: "2024-04-25",
+              activity:
+                "Fase de Desarrollo - Inclusión de recursos multimedia.",
             },
           ],
         },
         {
           title: "Level 5",
-          description: "Lava Lagoon Escape",
+          description: "Fase de pruebas y testeo",
           background: require("@/assets/level5.png"),
+          links: [
+            {
+              title: "Pruebas",
+              link: "https://docs.google.com/document/d/1B1yWf-vXIMYt1FX3gQ53U07P8QZhkFqKQTCgW-TW0Jg/edit",
+            },
+          ],
           activities: [
             {
-              date: "2022-01-01",
-              activity: "Actividad 1",
+              date: "2024-05-01",
+              activity: "Fase de Pruebas - Tests unitarios y de integracion.",
             },
             {
-              date: "2022-01-02",
-              activity: "Actividad 2",
+              date: "2024-05-10",
+              activity: "Fase de Pruebas - Test de responsividad.",
+            },
+            {
+              date: "2024-05-20",
+              activity: "Fase de Pruebas - Tests de estres y escalabilidad.",
+            },
+            {
+              date: "2024-05-25",
+              activity:
+                "Fase de Pruebas - Test de rendimiento y correcciones finales.",
             },
           ],
         },
         {
           title: "Level 6",
-          description: "Ice Kingdom Journey",
+          description: "Fase de Implementacion",
           background: require("@/assets/level6.png"),
+          links: [
+            {
+              title: "Implementacion",
+              link: "https://docs.google.com/document/d/1ON3MrIl8D_F6YGzDeIGjwGldDdKyymrDxPNRZt0qs9k/edit",
+            },
+          ],
           activities: [
             {
-              date: "2022-01-01",
-              activity: "Actividad 1",
+              date: "2024-06-01",
+              activity:
+                "Fase de Implementacion - Lanzamiento del sitio web en produccion.",
             },
             {
-              date: "2022-01-02",
-              activity: "Actividad 2",
+              date: "2024-06-10",
+              activity:
+                "Fase de Implementacion - Configuracion de servidores y bases de datos.",
+            },
+            {
+              date: "2024-06-20",
+              activity: "Fase de Implementacion - Ajustes de disponibilidad.",
             },
           ],
         },
         {
           title: "Level 7",
-          description: "Final Castle Showdown",
+          description: "Fase de Cierre",
           background: require("@/assets/level7.png"),
-          activities: [
+          links: [
             {
-              date: "2022-01-01",
-              activity: "Actividad 1",
+              title: "Carta de cierre",
+              link: "https://docs.google.com/document/d/1hVmZJau5s7Kv1wPpHzHTnGqTEBmCtGbfHCXJrMeVLJM/edit",
             },
             {
-              date: "2022-01-02",
-              activity: "Actividad 2",
+              title: "Manuales de sistema",
+              link: "https://docs.google.com/document/d/1SIfrqnBfb95cje-mFKoPE32eoYmeu44DNXu8rqw0Lgo/edit",
+            },
+            {
+              title: "Manual de usuario",
+              link: "https://docs.google.com/document/d/1jIxgvMR4SasWv2Pyl80yHtY83jzXlIpjs7lVJEiBOww/edit",
+            },
+          ],
+          activities: [
+            {
+              date: "2024-07-01",
+              activity: "Fase de Cierre - Entrega de pagina web a cliente.",
+            },
+            {
+              date: "2024-07-10",
+              activity: "Fase de Cierre - Entrega de manuales y documentacion.",
+            },
+            {
+              date: "2024-07-20",
+              activity: "Fase de Cierre - Realizacion de retrospectiva.",
+            },
+            {
+              date: "2024-07-27",
+              activity: "Fase de Cierre - Entrega de carta de cierre.",
             },
           ],
         },
