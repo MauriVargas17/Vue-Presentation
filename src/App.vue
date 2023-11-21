@@ -41,7 +41,9 @@
     </div>
     <div v-if="selectedLevel" id="level-info" :style="{ backgroundImage: 'url(' + selectedLevel.background + ')' }">
       <h1>{{ selectedLevel.title }}</h1>
-      <a v-if="selectedLevel.link" :href="selectedLevel.link" target="_blank">Documentación</a>
+      <a v-if="selectedLevel.link" :href="selectedLevel.link" target="_blank">
+        <img :src="require('@/assets/paperPxlArt.png')" alt="Paper Pxl Art" style="max-width: 50px;">
+      </a>
       <p>{{ selectedLevel.description }}</p>
       <table>
         <thead>
@@ -73,7 +75,7 @@ export default {
         height: 600,
       },
       selectedLevel: null,
-      levels: [
+      level: [
         {
           title: "Level 1",
           description: "Descripcion de TDR para Fendermed",
@@ -241,7 +243,7 @@ export default {
       if (
         this.isNearPosition((360 * this.initialWindowSize.width) / 2000, 20)
       ) {
-        const currentLevel = this.levels.find(
+        const currentLevel = this.level.find(
           (level) => level.title === "Level 1"
         );
         this.selectedLevel = currentLevel;
@@ -251,7 +253,7 @@ export default {
       if (
         this.isNearPosition((1000 * this.initialWindowSize.width) / 2000, 20)
       ) {
-        const currentLevel = this.levels.find(
+        const currentLevel = this.level.find(
           (level) => level.title === "Level 2"
         );
         this.selectedLevel = currentLevel;
@@ -260,7 +262,7 @@ export default {
       if (
         this.isNearPosition((1200 * this.initialWindowSize.width) / 2000, 20)
       ) {
-        const currentLevel = this.levels.find(
+        const currentLevel = this.level.find(
           (level) => level.title === "Level 3"
         );
         this.selectedLevel = currentLevel;
@@ -272,7 +274,7 @@ export default {
           (20 * this.initialWindowSize.height) / 100
         )
       ) {
-        const currentLevel = this.levels.find(
+        const currentLevel = this.level.find(
           (level) => level.title === "Level 4"
         );
         this.selectedLevel = currentLevel;
@@ -284,7 +286,7 @@ export default {
           this.initialWindowSize.height - 100
         )
       ) {
-        const currentLevel = this.levels.find(
+        const currentLevel = this.level.find(
           (level) => level.title === "Level 5"
         );
         this.selectedLevel = currentLevel;
@@ -296,7 +298,7 @@ export default {
           this.initialWindowSize.height - 100
         )
       ) {
-        const currentLevel = this.levels.find(
+        const currentLevel = this.level.find(
           (level) => level.title === "Level 6"
         );
         this.selectedLevel = currentLevel;
@@ -308,7 +310,7 @@ export default {
           this.initialWindowSize.height - 300
         )
       ) {
-        const currentLevel = this.levels.find(
+        const currentLevel = this.level.find(
           (level) => level.title === "Level 7"
         );
         this.selectedLevel = currentLevel;
