@@ -2,37 +2,25 @@
   <div id="app">
     <div id="map-container">
       <img id="map" src="@/assets/map.png" alt="Map Background" />
-      <img
-        id="mario"
-        @click="selectLevel"
-        :src="marioImage"
-        :style="{
-          top: marioPosition.top + 'px',
-          left: marioPosition.left + 'px',
-        }"
-      />
-
+      <img id="mario" @click="selectLevel" :src="marioImage" :style="{
+        top: marioPosition.top + 'px',
+        left: marioPosition.left + 'px',
+      }" />
+      <audio id="backgroundMusic" loop autoplay>
+        <source src="@/assets/musicMarioBros.mp3" type="audio/mp3" />
+      </audio>
       <div>
         <div v-if="selectedLevel">
           <button @click="backToSelection">Back to Level Selection</button>
-          <component
-            :is="selectedLevelComponent"
-            :background="selectedLevel.background"
-          />
+          <component :is="selectedLevelComponent" :background="selectedLevel.background" />
         </div>
         <div v-else>
           <h1>Level Selection</h1>
           <div>
-            <div
-              @click="selectLevel(1)"
-              :class="{ selected: selectedLevel === 1 }"
-            >
+            <div @click="selectLevel(1)" :class="{ selected: selectedLevel === 1 }">
               <img src="@/assets/lvl1.png" alt="Level 1" />
             </div>
-            <div
-              @click="selectLevel(2)"
-              :class="{ selected: selectedLevel === 2 }"
-            >
+            <div @click="selectLevel(2)" :class="{ selected: selectedLevel === 2 }">
               <img src="@/assets/lvl2.png" alt="Level 2" />
             </div>
           </div>
@@ -51,18 +39,11 @@
       <p>{{ selectedLevel.description }}</p>
       <button @click="backToSelection">Back to Level Selection</button>
     </div>
-    <audio id="backgroundMusic" loop autoplay>
-      <source src="@/assets/musicMarioBros.mp3" type="audio/mp3" />
-    </audio>
-    <div
-      v-if="selectedLevel"
-      id="level-info"
-      :style="{ backgroundImage: 'url(' + selectedLevel.background + ')' }"
-    >
+    <div v-if="selectedLevel" id="level-info" :style="{ backgroundImage: 'url(' + selectedLevel.background + ')' }">
       <h1>{{ selectedLevel.title }}</h1>
-      <a v-if="selectedLevel.link" :href="selectedLevel.link" target="_blank"
-        >Documentación</a
-      >
+      <a v-if="selectedLevel.link" :href="selectedLevel.link" target="_blank">
+        <img :src="require('@/assets/paperPxlArt.png')" alt="Paper Pxl Art" style="max-width: 50px;">
+      </a>
       <p>{{ selectedLevel.description }}</p>
       <table>
         <thead>
@@ -72,11 +53,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr
-            v-for="activity in selectedLevel.activities"
-            :key="activity.date"
-            class="activity-row"
-          >
+          <tr v-for="activity in selectedLevel.activities" :key="activity.date" class="activity-row">
             <td>{{ activity.date }}</td>
             <td>{{ activity.activity }}</td>
           </tr>
@@ -98,7 +75,7 @@ export default {
         height: 600,
       },
       selectedLevel: null,
-      levels: [
+      level: [
         {
           title: "Level 1",
           description: "Descripcion de TDR para Fendermed",
@@ -107,19 +84,19 @@ export default {
           activities: [
             {
               date: "2022-01-01",
-              activity: "Actividad 1",
+              activity: "Reuniones Iniciales con Interesados",
             },
             {
               date: "2022-01-02",
-              activity: "Actividad 2",
+              activity: "Definición de Objetivos y Alcance",
             },
             {
               date: "2022-01-03",
-              activity: "Actividad 3",
+              activity: "Análisis de Requisitos",
             },
             {
               date: "2022-01-04",
-              activity: "Actividad 4",
+              activity: "Investigación de Tecnologías",
             },
           ],
         },
@@ -131,27 +108,39 @@ export default {
           activities: [
             {
               date: "2022-01-01",
-              activity: "Actividad 1",
+              activity: "Definición del Proyecto",
             },
             {
               date: "2022-01-02",
-              activity: "Actividad 2",
+              activity: "Identificación de Interesados",
+            },
+            {
+              date: "2022-01-03",
+              activity: "Estudio de Viabilidad",
+            },
+            {
+              date: "2022-01-04",
+              activity: "Formación del Equipo del Proyecto",
             },
           ],
         },
         {
           title: "Level 3",
-          description: "Sky High Challenge",
+          description: "Sky High Challenge (Herramientas que se usaran)",
           background: require("@/assets/level3.png"),
-          link: "",
+          link: "https://docs.google.com/document/d/15Z26m_yu_WGgBsiHr089wSMsjZRSPVtDN2mwLHxlOs4/edit",
           activities: [
             {
-              date: "2022-01-01",
-              activity: "Actividad 1",
+              date: "1",
+              activity: "YouTrack",
             },
             {
-              date: "2022-01-02",
-              activity: "Actividad 2",
+              date: "2",
+              activity: "Mockups.com",
+            },
+            {
+              date: "3",
+              activity: "Draw.io",
             },
           ],
         },
@@ -221,6 +210,10 @@ export default {
     };
   },
   methods: {
+    playBackgroundMusic() {
+      const audio = document.getElementById("backgroundMusic");
+      audio.play();
+    },
     isNearPosition(targetX, targetY) {
       const threshold = 80;
 
@@ -236,6 +229,7 @@ export default {
     moveRight() {
       this.marioPosition.left += 10 * 2;
       this.updateCoordinates();
+      this.playBackgroundMusic();
     },
     moveUp() {
       this.marioPosition.top -= 10 * 2;
@@ -249,16 +243,17 @@ export default {
       if (
         this.isNearPosition((360 * this.initialWindowSize.width) / 2000, 20)
       ) {
-        const currentLevel = this.levels.find(
+        const currentLevel = this.level.find(
           (level) => level.title === "Level 1"
         );
         this.selectedLevel = currentLevel;
         console.log(this.selectedLevel);
+        this.playBackgroundMusic();
       }
       if (
         this.isNearPosition((1000 * this.initialWindowSize.width) / 2000, 20)
       ) {
-        const currentLevel = this.levels.find(
+        const currentLevel = this.level.find(
           (level) => level.title === "Level 2"
         );
         this.selectedLevel = currentLevel;
@@ -267,7 +262,7 @@ export default {
       if (
         this.isNearPosition((1200 * this.initialWindowSize.width) / 2000, 20)
       ) {
-        const currentLevel = this.levels.find(
+        const currentLevel = this.level.find(
           (level) => level.title === "Level 3"
         );
         this.selectedLevel = currentLevel;
@@ -279,7 +274,7 @@ export default {
           (20 * this.initialWindowSize.height) / 100
         )
       ) {
-        const currentLevel = this.levels.find(
+        const currentLevel = this.level.find(
           (level) => level.title === "Level 4"
         );
         this.selectedLevel = currentLevel;
@@ -291,7 +286,7 @@ export default {
           this.initialWindowSize.height - 100
         )
       ) {
-        const currentLevel = this.levels.find(
+        const currentLevel = this.level.find(
           (level) => level.title === "Level 5"
         );
         this.selectedLevel = currentLevel;
@@ -303,7 +298,7 @@ export default {
           this.initialWindowSize.height - 100
         )
       ) {
-        const currentLevel = this.levels.find(
+        const currentLevel = this.level.find(
           (level) => level.title === "Level 6"
         );
         this.selectedLevel = currentLevel;
@@ -315,7 +310,7 @@ export default {
           this.initialWindowSize.height - 300
         )
       ) {
-        const currentLevel = this.levels.find(
+        const currentLevel = this.level.find(
           (level) => level.title === "Level 7"
         );
         this.selectedLevel = currentLevel;
@@ -390,10 +385,6 @@ export default {
   beforeUnmount() {
     window.removeEventListener("keydown", this.onKeyDown);
     window.removeEventListener("resize", this.updateCoordinates);
-  },
-  playBackgroundMusic() {
-    const audio = document.getElementById("backgroundMusic");
-    audio.play();
   },
 };
 </script>
