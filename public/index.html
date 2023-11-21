@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mario Presentation</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+    <style>
+        #mario {
+            position: absolute;
+            top: 100px;
+            left: 100px;
+            width: 30px;
+            height: 30px;
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+
+<div id="app">
+    <div id="mario" @click="selectLevel"></div>
+    <div v-if="selectedLevel">
+        <h1>{{ selectedLevel.title }}</h1>
+        <p>{{ selectedLevel.description }}</p>
+        <button @click="backToSelection">Back to Level Selection</button>
+    </div>
+    <div v-else>
+        <h1>Level Selection</h1>
+        <button @click="moveLeft">Left</button>
+        <button @click="moveRight">Right</button>
+        <button @click="moveUp">Up</button>
+        <button @click="moveDown">Down</button>
+    </div>
+</div>
+
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            selectedLevel: null,
+            levels: [
+                { title: 'Level 1', description: 'Description for Level 1' },
+                { title: 'Level 2', description: 'Description for Level 2' },
+                // Add more levels as needed
+            ],
+            marioPosition: { top: 100, left: 100 }
+        },
+        methods: {
+            moveLeft() {
+                this.marioPosition.left -= 10;
+            },
+            moveRight() {
+                this.marioPosition.left += 10;
+            },
+            moveUp() {
+                this.marioPosition.top -= 10;
+            },
+            moveDown() {
+                this.marioPosition.top += 10;
+            },
+            selectLevel() {
+                const currentLevel = this.levels[Math.floor(Math.random() * this.levels.length)];
+                this.selectedLevel = currentLevel;
+            },
+            backToSelection() {
+                this.selectedLevel = null;
+            }
+        }
+    });
+</script>
+
+</body>
+</html>
